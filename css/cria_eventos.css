@@ -1,0 +1,23 @@
+.form {
+  padding: 20px;
+}
+.form .row{
+	margin-left: 15%;
+}
+.form .form-group {
+  margin-top: 10px;
+}
+
+.form .form-group .form-control {
+  width: 100%;
+}
+.btn {
+	background: #6D7FCC;
+	color: #FFFFFF;
+}
+.btn:hover
+{
+    background:#4169E1;
+    color: #FFFFFF;
+}
+
