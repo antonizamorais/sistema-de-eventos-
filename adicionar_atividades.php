@@ -2,6 +2,7 @@
 ini_set('default_charset','UTF-8');
   session_start();
   include_once 'conexao.php';
+  include_once 'seguranca.php';
   $cod_event = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
   $_SESSION['cod'] = $cod_event;
 ?>

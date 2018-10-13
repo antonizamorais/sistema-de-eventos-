@@ -3,7 +3,11 @@
 <!-- Sidebar  -->
 <nav id="sidebar">
   <div class="sidebar-header">
-    <h3>Bem vindo</h3>
+    <h3><?php
+      echo "BEM-VINDO !";?></h3>
+      <h6 style='text-align: center;'><?php echo "<br>";
+      echo $_SESSION['nome_user']; 
+    ?></h6>
   </div>
   <ul class="list-unstyled components">
     <li>
@@ -33,13 +37,27 @@
       </ul>
     </li>
     <li>
+      <a href="#page2Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fas fa-clipboard-list"></i>
+        Atividades
+      </a>
+      <ul class="collapse list-unstyled" id="page2Submenu">
+        <li>
+          <a href="minhas_atividades.php">Minhas Atividades</a>
+        </li>
+        <li>
+          <a href="lista_de_eventos.php">Criar</a>
+        </li>
+      </ul>
+    </li>
+    <li>
       <a href="#">
         <i class="fas fa-user"></i>
         Usuários
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="lista_de_trabalhos.php">
         <i class="fas fa-file"></i>
         Trabalhos
       </a>
@@ -51,15 +69,15 @@
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="buscar_eventos_credenciamento.php">
          <i class="fas fa-id-badge"></i>
         Credenciamento
       </a>
     </li>
     <li>
-      <a href="minhas_atividades.php">
-        <i class="fas fa-clipboard-list"></i>
-        Minhas atividades
+      <a href="atividades_para_lista_frequencia.php">
+         <i class="fas fa-clipboard-check"></i>
+        Frequência
       </a>
     </li>
     <li>

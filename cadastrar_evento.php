@@ -22,18 +22,21 @@
 	if (empty($_POST['insc_ativ']) ) {
 		$insc_ativade = 0;
 	}
-	$nome_coor =  $_SESSION['nom'] ;
+	$id_coo =  $_SESSION['idCoo'] ;
 	$data1_insc = $_POST['data_inicio_ins'];
 	$data2_insc = $_POST['data_fim_ins'];
 
-	$cadastrar = "INSERT INTO evento(nome, coordenador, data_inicio, data_fim, hora_inicio, hora_final, local, certificado, insc_ativ, data_inicio_inscricao, data_final_inscricao) VALUES ('$nome_evento','$nome_coor','$data_inicio','$data_fim','$hora_inicio','$hora_fim', '$local_evento', '$cert_evento', '$insc_ativade', '$data1_insc','$data2_insc')";
+	$cadastrar = "INSERT INTO evento(nome_evento, cod_coordenador, data_inicio, data_fim, hora_inicio, hora_final, local, certificado, insc_ativ, data_inicio_inscricao, data_final_inscricao) VALUES ('$nome_evento','$id_coo','$data_inicio','$data_fim','$hora_inicio','$hora_fim', '$local_evento', '$cert_evento', '$insc_ativade', '$data1_insc','$data2_insc')";
 	$resultado_cadastrar = mysqli_query($conexao, $cadastrar);
 	$receber = mysqli_commit($conexao);
 
 	if ($resultado_cadastrar) {
 		echo "cadastro de evento realizado com sucesso";
 	}else{
-		echo "<script>alert('Infome os dados corretamente'); window.location='criar_evento_passo2.php';</script>";
+		echo "erro";
+		echo "<br>";
+		echo $cadastrar;
+		//echo "<script>alert('Infome os dados corretamente'); window.location='criar_evento.php';</script>";
 	}
 	// Close connection
 	mysqli_close($conexao);

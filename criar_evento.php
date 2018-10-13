@@ -48,6 +48,8 @@
                 <?php 
                   while($linhas = mysqli_fetch_assoc($result)){
                     $nome = $linhas['nome'];;
+                    $id_coordenador = $linhas['id'];
+                    $_SESSION['idCoo'] = $id_coordenador;
                     $cpf = $linhas['cpf'];
                     $email = $linhas['email'];
                     echo "<tr>";
@@ -116,8 +118,8 @@
           </div> 
           <div class="col-lg-5">
             <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="defaultUnchecked" name="insc_ativ" value="true">
-              <label class="custom-control-label" for="defaultUnchecked">Inscrição de atividade</label>
+              <input type="checkbox" class="custom-control-input" id="defaultUnchecked2" name="insc_ativ" value="true">
+              <label class="custom-control-label" for="defaultUnchecked2">Inscrição de atividade</label>
             </div>
           </div> 
         </div>

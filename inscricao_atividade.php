@@ -31,7 +31,7 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-      $buscar_atividades = "SELECT * FROM inscricao_evento, atividade WHERE cod3_evento = $cod_e AND cod_usuario = $usuario AND cod_evento = $cod_e";
+      $buscar_atividades = "SELECT * FROM inscricao_evento, atividade, usuarios_cadastrados WHERE cod3_evento = $cod_e AND cod_usuario = $usuario AND cod_evento = $cod_e AND id = cod_facilitador";
       $resultado = mysqli_query($conexao, $buscar_atividades);
     ?>
     <h1 style="text-align: center;">Atividades do Evento</h1>
@@ -50,7 +50,7 @@
             $id_ativ = $rows_atividades['id_atividade'];
             $_SESSION['id_ativi'] = $id_ativ;
             $nome_a = $rows_atividades['nome_atividade'];
-            $facilitador_a = $rows_atividades['facilitador'];
+            $facilitador_a = $rows_atividades['nome'];
             $data_1a = $rows_atividades['data_inicio'];
             $data_2a= $rows_atividades['data_final'];
             echo "<tr>";

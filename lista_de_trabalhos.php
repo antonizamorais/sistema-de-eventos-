@@ -2,7 +2,7 @@
   session_start();
   include_once("conexao.php");
   include_once("seguranca.php");
-  $id_usuario = $_SESSION['id_user'];
+  $id_participante = $_SESSION['id_user'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,41 +29,39 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-    //buscar eventos em que o usuário logado esta inscrito
-      $buscar_eventos = "SELECT DISTINCT * FROM evento, inscricao_evento WHERE cod_evento = id_evento AND cod_usuario = $id_usuario";
-      $resultado = mysqli_query($conexao, $buscar_eventos);
-
+    //buscar trabalhos enviados pelo usuario logado - participante.
+      $buscar_trabalhos = "SELECT * FROM trabalho WHERE 
+      num_usuario = $id_participante";
+      $resultado = mysqli_query($conexao, $buscar_trabalhos);
     ?>
-    <h1 style="text-align: center;">Meus Eventos</h1>
+    <h1 style="text-align: center;">Meus Trabalhos</h1>
     <br>
     <table class="table table-bordered">
       <thead class="thead-dark">
-        <th scope="col">Nome</th>
-        <th scope="col">Data de inicio</th>
-        <th scope="col">Data de termino</th>
+        <th scope="col">Título</th>
+        <th scope="col">Resumo</th>
         <th scope="col">Local</th>
-        <th><em class="fa fa-cog"></em></th>
+        <th scope="col">Avaliação</th>
       </thead>
       <tbody>
         <?php 
-          while($rows_evento = mysqli_fetch_array($resultado)){
-            $id_e = $rows_evento['id_evento'];
-            $_SESSION['id_ev'] = $id_e;
-            $nome_e = $rows_evento['nome_evento'];
-            $data_1e = $rows_evento['data_inicio'];
-            $data_2e= $rows_evento['data_fim'];
-            $local_e = $rows_evento['local'];
+          while($rows_trabalho = mysqli_fetch_array($resultado)){
+            $num_trabalho = $rows_trabalho['numero'];
+            $resumo = $rows_trabalho['resumo'];
+            $titulo = $rows_trabalho['titulo'];
+            $avaliacao= $rows_trabalho['avaliacao'];
+            $local = $rows_trabalho['local'];
             echo "<tr>";
-            echo "<td>".$nome_e."</td>";
-            echo "<td>".$data_1e."</td>";
-            echo "<td>".$data_2e."</td>";
-            echo "<td>".$local_e."</td>";
-            echo "<td><a class ='btn' href ='inscricao_atividade.php?id=$id_e'>ATIVIDADES</a></td>";
+            echo "<td>".$titulo."</td>";
+            echo "<td>".$resumo."</td>";
+            echo "<td>".$local."</td>";
+            echo "<td>".$avaliacao."</td>";
             echo "</tr>";
           }
         ?>
       </tbody>
     </table>
+    <a href="enviar_trabalhos">enviar novo trabalho</a>
     <?php 
       include_once 'includes/footer.php';
     ?> 

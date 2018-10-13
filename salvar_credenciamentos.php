@@ -14,7 +14,6 @@
 	if (empty($_POST['presente']) ) {
 		$presente = 0;
 	}
-	
 	$cadastrar_credenciamento = "INSERT INTO credenciamento 
 	(num_inscricao_evento, codigo_evento, codigo_usuario) 
 	VALUES ('$num_inscricao_participante', '$num_evento', '$id_participante');";

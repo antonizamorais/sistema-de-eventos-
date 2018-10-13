@@ -2,7 +2,8 @@
   session_start();
   include_once("conexao.php");
   include_once("seguranca.php");
-  $id_usuario = $_SESSION['id_user'];
+
+  $usuario = $_SESSION['id_user'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,36 +30,36 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-    //buscar eventos em que o usuário logado esta inscrito
-      $buscar_eventos = "SELECT DISTINCT * FROM evento, inscricao_evento WHERE cod_evento = id_evento AND cod_usuario = $id_usuario";
-      $resultado = mysqli_query($conexao, $buscar_eventos);
+    // BUSCAR ATIVIDADES EM QUE O USUÁRIO LOGADO DO TIPO FACILITADOR ESTA RESPONSÁVEL
+      $buscar_atividades = "SELECT DISTINCT * FROM atividade WHERE cod_facilitador = $usuario";
+      $resultado = mysqli_query($conexao, $buscar_atividades);
 
     ?>
-    <h1 style="text-align: center;">Meus Eventos</h1>
+    <h1 style="text-align: center;">Atividades</h1>
     <br>
     <table class="table table-bordered">
       <thead class="thead-dark">
         <th scope="col">Nome</th>
         <th scope="col">Data de inicio</th>
         <th scope="col">Data de termino</th>
-        <th scope="col">Local</th>
+        <th scope="col">Tipo de Atividade</th>
         <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
-          while($rows_evento = mysqli_fetch_array($resultado)){
-            $id_e = $rows_evento['id_evento'];
-            $_SESSION['id_ev'] = $id_e;
-            $nome_e = $rows_evento['nome_evento'];
-            $data_1e = $rows_evento['data_inicio'];
-            $data_2e= $rows_evento['data_fim'];
-            $local_e = $rows_evento['local'];
+          while($rows_atividade= mysqli_fetch_array($resultado)){
+            $id_a = $rows_atividade['id_atividade'];
+            $_SESSION['id_ativi'] = $id_a;
+            $nome_a = $rows_atividade['nome_atividade'];
+            $data_1a = $rows_atividade['data_inicio'];
+            $data_2a= $rows_atividade['data_final'];
+            $tipo_a = $rows_atividade['tipo'];
             echo "<tr>";
-            echo "<td>".$nome_e."</td>";
-            echo "<td>".$data_1e."</td>";
-            echo "<td>".$data_2e."</td>";
-            echo "<td>".$local_e."</td>";
-            echo "<td><a class ='btn' href ='inscricao_atividade.php?id=$id_e'>ATIVIDADES</a></td>";
+            echo "<td>".$nome_a."</td>";
+            echo "<td>".$data_1a."</td>";
+            echo "<td>".$data_2a."</td>";
+            echo "<td>".$tipo_a."</td>";
+            echo "<td><a class ='btn' href ='lista_alunos_atividade.php?id=$id_a'>FREQUÊNCIA</a></td>";
             echo "</tr>";
           }
         ?>

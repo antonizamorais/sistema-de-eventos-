@@ -29,12 +29,12 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-    //buscar eventos em que o usuário logado esta inscrito
-      $buscar_eventos = "SELECT DISTINCT * FROM evento, inscricao_evento WHERE cod_evento = id_evento AND cod_usuario = $id_usuario";
+    //buscar eventos em que o usuário logado seja o coordenador do evento
+      $buscar_eventos = "SELECT DISTINCT * FROM evento WHERE cod_coordenador = $id_usuario";
       $resultado = mysqli_query($conexao, $buscar_eventos);
 
     ?>
-    <h1 style="text-align: center;">Meus Eventos</h1>
+    <h1 style="text-align: center;">Eventos</h1>
     <br>
     <table class="table table-bordered">
       <thead class="thead-dark">
@@ -58,7 +58,7 @@
             echo "<td>".$data_1e."</td>";
             echo "<td>".$data_2e."</td>";
             echo "<td>".$local_e."</td>";
-            echo "<td><a class ='btn' href ='inscricao_atividade.php?id=$id_e'>ATIVIDADES</a></td>";
+            echo "<td><a class ='btn' href ='fazer_credenciamento.php?id=$id_e'>FAZER CREDENCIAMENTO</a></td>";
             echo "</tr>";
           }
         ?>

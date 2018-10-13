@@ -30,7 +30,8 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-      $buscar_atividades = "SELECT * FROM atividade, inscricao_atividade WHERE id_atividade = cod_atividade AND cod2_usuario = $usuario";
+    // BUSCAR ATIVIDADES EM QUE O USUÁRIO LOGADO ESTA INSCRITO
+      $buscar_atividades = "SELECT DISTINCT * FROM atividade, inscricao_atividade WHERE id_atividade = cod_atividade AND cod2_usuario = $usuario";
       $resultado = mysqli_query($conexao, $buscar_atividades);
 
     ?>
@@ -42,7 +43,6 @@
         <th scope="col">Data de inicio</th>
         <th scope="col">Data de termino</th>
         <th scope="col">Tipo de Atividade</th>
-        <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
@@ -58,7 +58,6 @@
             echo "<td>".$data_1a."</td>";
             echo "<td>".$data_2a."</td>";
             echo "<td>".$tipo_a."</td>";
-            echo "<td><a class ='btn' href ='lista_alunos_atividade.php?id=$id_a'>FREQUÊNCIA</a></td>";
             echo "</tr>";
           }
         ?>

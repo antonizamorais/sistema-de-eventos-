@@ -1,6 +1,7 @@
 <?php
   session_start();
   include_once("conexao.php");
+  include_once 'seguranca.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,7 +28,8 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-      $buscar_eventos = "SELECT * FROM evento";
+    //buscar todos os eventos criados e seus respectivos coordenadores
+      $buscar_eventos = "SELECT * FROM evento, usuarios_cadastrados WHERE cod_coordenador = id";
       $resultado = mysqli_query($conexao, $buscar_eventos);
     ?>
     <h1 style="text-align: center;">Adicionar Atividades</h1>
@@ -49,12 +51,12 @@
             $id_e = $rows_evento['id_evento'];
             $_SESSION['id_ev'] = $id_e;
             $nome_e = $rows_evento['nome_evento'];
-            $cood_e = $rows_evento['coordenador'];
+            $cood_e = $rows_evento['nome'];
             $data_1e = $rows_evento['data_inicio'];
             $data_2e= $rows_evento['data_fim'];
             $local_e = $rows_evento['local'];
             echo "<tr>";
-            echo"<td><a class='btn btn-info' href ='adicionar_atividades.php?id=$id_e'><em class='fa  fa-plus'></em></a></td>";
+            echo"<td><a class='btn' href ='adicionar_atividades.php?id=$id_e'>SELECIONAR</a></td>";
             echo "<td>".$id_e."</td>";
             echo "<td>".$nome_e."</td>";
             echo "<td>".$cood_e."</td>";
