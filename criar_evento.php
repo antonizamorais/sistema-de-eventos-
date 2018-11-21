@@ -1,9 +1,8 @@
 <?php 
   session_start();
   include_once 'conexao.php';
-  $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-  $_SESSION['id'] = $id;
-  $cont = "SELECT * FROM usuarios_cadastrados where id = '$id'";
+  $id =  $_SESSION['id_user'];
+  $cont = "SELECT * FROM usuarios where id_usuario = '$id'";
   $result = mysqli_query($conexao,$cont);
   $linhas = mysqli_num_rows($result);
 ?>
@@ -31,12 +30,11 @@
       <?php
         include_once("includes/navbar.php");
       ?>
-      <h1 style="text-align: center;">Criar novo evento</h1>
-      <p>Passo 2: Cadastrar Dados do Evento</p>
-      <br>
+      <h1 style="text-align: center;">Criar Novo Evento</h1>
+      <p>Campos com * são obrigatórios</p>
       <form class="form" action="cadastrar_evento.php" method="POST">
         <div class="row">
-          <legend>Dados do Coordenador do evento</legend>
+          <legend>Dados do Coordenador do Evento</legend>
           <div class="col-lg-10">
             <table class="table table-bordered">
               <thead>
@@ -47,15 +45,14 @@
               <tbody>
                 <?php 
                   while($linhas = mysqli_fetch_assoc($result)){
-                    $nome = $linhas['nome'];;
-                    $id_coordenador = $linhas['id'];
-                    $_SESSION['idCoo'] = $id_coordenador;
-                    $cpf = $linhas['cpf'];
-                    $email = $linhas['email'];
+                    $nomeCoordenador = $linhas['nome_usuario'];
+                    $idCoordenador = $linhas['id_usuario'];
+                    $cpfCoordenador = $linhas['cpf_usuario'];
+                    $emailCoordenador = $linhas['email_usuario'];
                     echo "<tr>";
-                    echo "<td>".$nome."</td>";
-                    echo "<td>".$cpf."</td>";
-                    echo "<td>".$email."</td>";
+                    echo "<td>".$nomeCoordenador."</td>";
+                    echo "<td>".$cpfCoordenador."</td>";
+                    echo "<td>".$emailCoordenador."</td>";
                     echo "</tr>";
                   }
                 ?>
@@ -66,7 +63,7 @@
         <div class="row">
           <legend>Dados do evento</legend>
           <div class="col-lg-10">
-            <label>Nome do evento:</label>
+            <label>* Nome do evento:</label>
             <div class="form-group">
               <input type="text" name="nome_evento" id="nome_evento" class="form-control"required="">
             </div>
@@ -75,13 +72,13 @@
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data de inicio:</span>
+              <span>* Data de início:</span>
               <input type="date" name="data_inicio" id="data_inicio" class="form-control"required="">
             </div>
           </div>
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data final:</span>
+              <span>* Data final:</span>
               <input type="date" name="data_fim" id="data_fim" class="form-control"required="">
             </div>
           </div>
@@ -89,20 +86,20 @@
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Horário de inicio:</span>
+              <span>* Horário de ínicio:</span>
               <input type="time" name="hora_inicio_evento" id="hora_inicio_evento" class="form-control"required="">
             </div>
           </div>
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Horário final:</span>
+              <span>* Horário final:</span>
               <input type="time" name="hora_fim_evento" id="hora_fim_evento" class="form-control"required="">
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-10">
-            <label>Local:</label>
+            <label>* Local:</label>
             <div class="form-group">
               <input type="text" name="local_evento" id="local_evento" class="form-control"required="">
             </div>
@@ -110,31 +107,37 @@
         </div>
         <br>
         <div class="row">
-          <div class="col-lg-5">
+          <div class="col-lg-4">
+            <label>Número máximo de participantes:</label>
+            <div class="form-group">
+              <input type="number" name="numParticipantes" id="numParticipantes" class="form-control">
+            </div>
+          </div>  
+          <div class="col-lg-3">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="defaultUnchecked" name="cert_atividade" value="true">
               <label class="custom-control-label" for="defaultUnchecked">Gerar certificado</label>
             </div>
           </div> 
-          <div class="col-lg-5">
+          <div class="col-lg-3">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="defaultUnchecked2" name="insc_ativ" value="true">
               <label class="custom-control-label" for="defaultUnchecked2">Inscrição de atividade</label>
             </div>
-          </div> 
+          </div>
         </div>
         <br>
         <div class="row">
-          <legend>Periodo de inscrição</legend>
+          <legend>Período de inscrição</legend>
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data de inicio:</span>
+              <span>* Data de início:</span>
               <input type="date" name="data_inicio_ins" id="data_inicio_ins" class="form-control"required="">
             </div>
           </div>
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data final:</span>
+              <span>* Data final:</span>
               <input type="date" name="data_fim_ins" id="data_fim_ins" class="form-control"required="">
             </div>
           </div>

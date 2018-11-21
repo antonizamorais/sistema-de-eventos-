@@ -10,7 +10,7 @@ include_once 'cadastrar_usuario.php';
     <title>SEDGE</title>
     <link rel="stylesheet" type="text/css" href="css/cadastro.css">
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 <div class="wrapper" style="background-color: ">
@@ -18,21 +18,21 @@ include_once 'cadastrar_usuario.php';
     <div id="content">
       <h1 style="text-align: center;">CADASTRO</h1>
       <br>
-      <br>
-      <p class="text-center text-danger">
+      <br>  
+      <form class="form" action="" method="POST">
+        <p>
         <?php
             if(isset($_SESSION['msg'])){
                 echo $_SESSION['msg'];
                 unset($_SESSION['msg']);
             }
         ?>
-      </p>   
-      <form class="form" action="" method="POST">
+      </p> 
         <div class="row">
             <div class="col-lg-10">
                 <label>Nome</label>
                 <div class="form-group">
-                    <input type="text" name="nome" id="nome" class="form-control" placeholder="nome completo" required>
+                    <input type="text" name="nome" id="nome" class="form-control" placeholder="nome completo" minlength="12" required>
                 </div>
             </div>
         </div>
@@ -41,8 +41,8 @@ include_once 'cadastrar_usuario.php';
                 <label>Sexo</label>
                 <div class="form-group">
                     <select name="sexo" size="1" class="form-control" id="sexo" required>
-                        <option>feminino</option>
-                        <option>masculino</option>
+                        <option>Feminino</option>
+                        <option>Masculino</option>
                     </select>
                 </div>
             </div>
@@ -154,7 +154,7 @@ include_once 'cadastrar_usuario.php';
         <br>
         <div class="row">
             <div class="col-lg-5">
-                <a href="login.php"> Já tenho Cadastro</a>
+                Já tem Cadastro? <a href="login.php">Clique aqui</a>
             </div>
         </div>
         </form>

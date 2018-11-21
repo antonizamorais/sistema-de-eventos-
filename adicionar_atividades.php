@@ -1,15 +1,13 @@
 <?php 
-ini_set('default_charset','UTF-8');
   session_start();
   include_once 'conexao.php';
   include_once 'seguranca.php';
-  $cod_event = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-  $_SESSION['cod'] = $cod_event;
+  $cod_evento = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+  $_SESSION['evento'] = $cod_evento;
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-  
+<head>  
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,13 +32,13 @@ ini_set('default_charset','UTF-8');
       <h1 style="text-align: center;">Adicionar Atividades</h1>
       <p>Passo 2: Adicionar Atividades do Evento</p>
       <br>
-      <form class="form" action="cadastrar_atividade.php?id=$id_amb" method="POST">
-        <P style="text-align: center;">
+      <form class="form" action="cadastrar_atividade.php" method="POST">
+        <legend style="text-align: center;">
           DADOS DA ATIVIDADE
-        </P>
+        </legend>
         <div class="row">
           <div class="col-lg-10">
-            <label>Nome da Atividade:</label>
+            <label>Nome da atividade:</label>
             <div class="form-group">
               <input type="text" name="nome_atividade" id="nome_atividade" class="form-control"required="">
             </div>
@@ -48,23 +46,36 @@ ini_set('default_charset','UTF-8');
         </div>
         <div class="row">
           <div class="col-lg-10">
-            <label>Nome do Facilitador:</label>
             <div class="form-group">
-              <input type="text" name="nome_fac" id="nome_fac" class="form-control"required="">
+              <label>Facilitador:</label>
+              <select class="form-control" name="facilitador">
+                <option>selecione</option>
+                <?php 
+                  $buscarFacilitadores = "SELECT * FROM usuarios WHERE tipo_usuario = 'Facilitador'";
+                  $resultado = mysqli_query($conexao, $buscarFacilitadores);
+                  while ($rows_amb = mysqli_fetch_array($resultado)) { 
+                    $idFacilitador = $rows_amb['id_usuario'];
+                    $_SESSION['facilitador'] = $idFacilitador;
+                    $nomeFacilitador = $rows_amb['nome_usuario'];
+                    echo "<option id='$idFacilitador' value = '$idFacilitador'>$nomeFacilitador</option>";
+                  }
+                ?>
+              </select>
             </div>
-          </div> 
+            <a href="#">Cadastrar novo facilitador</a>
+          </div>    
         </div>
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data 1:</span>
-              <input type="date" name="data_1" id="data_1" class="form-control"required="">
+              <span>Data de início:</span>
+              <input type="date" name="dataInicio" id="dataInicio" class="form-control"required="">
             </div>
           </div>
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data 2:</span>
-              <input type="date" name="data_2" id="data_2" class="form-control">
+              <span>Data de término:</span>
+              <input type="date" name="dataFinal" id="dataFinal" class="form-control">
             </div>
             <p>Data 2: somente se a avidade for desenvolvida em mais de um dia</p>
           </div>
@@ -72,7 +83,7 @@ ini_set('default_charset','UTF-8');
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Horário de inicio:</span>
+              <span>Horário de início:</span>
               <input type="time" name="hora_inicio_atividade" id="hora_inicio_atividade" class="form-control"required="">
             </div>
           </div>
@@ -86,7 +97,7 @@ ini_set('default_charset','UTF-8');
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <label>Tipo de Atividade</label>
+              <label>Tipo de atividade</label>
               <select class="form-control" name="tipo_atividade">
                 <option>Oficina</option>
                 <option>Minicurso</option>
@@ -94,6 +105,7 @@ ini_set('default_charset','UTF-8');
                 <option>Palestra</option>
                 <option>Simpósio</option>
                 <option>Painéis</option>
+                <option>Outro</option>
               </select>
             </div>
           </div> 
@@ -103,14 +115,15 @@ ini_set('default_charset','UTF-8');
               <select class="form-control" name="local">
                 <option>selecione</option>
                 <?php 
-                  $result_ambientes = "SELECT * FROM ambiente";
+                  $result_ambientes = "SELECT * FROM ambientes";
                   $resultado_amb = mysqli_query($conexao, $result_ambientes);
                   while ($rows_amb = mysqli_fetch_array($resultado_amb)) { 
-                    $id_amb = $rows_amb['id_ambiente'];
+                    $id_ambiente = $rows_amb['cod_ambiente'];
+                    $_SESSION['ambiente'] = $id_ambiente;
                     $sala = $rows_amb['sala'];
                     $andar = $rows_amb['andar'];
                     $bloco = $rows_amb['bloco'];
-                    echo "<option id='$id_amb' value = '$id_amb'>Sala: $sala, Andar: $andar, Bloco: $bloco</option>";
+                    echo "<option id='$id_ambiente' value = '$id_ambiente'>Sala: $sala, Andar: $andar, Bloco: $bloco</option>";
                   }
                 ?>
               </select>
@@ -118,22 +131,52 @@ ini_set('default_charset','UTF-8');
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-10">
+          <div class="col-lg-5">
             <label>Número máximo de participantes:</label>
             <div class="form-group">
-              <input type="number" name="max_participantes" id="max_participantes" class="form-control"required="">
+              <input type="number" name="max_participantes" id="max_participantes" class="form-control">
             </div>
           </div> 
-        </div>
-        <div class="row">
           <div class="col-lg-5">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" id="defaultUnchecked" name="cert_atividade" value="true">
-              <label class="custom-control-label" for="defaultUnchecked">Gerar certificado</label>
+            <div class="form-group">
+              <label>Certificado</label>
+              <select class="form-control" name="certificado_atividade">
+                <option>Com Certificado</option>
+                <option>Sem Certificado</option>
+              </select>
             </div>
           </div>  
         </div>
         <br>
+        <?php
+        // VERIFICAR SE O EVENTO PERMITIR INSCRIÇÕES EM SUAS ATIVIDADES ANTES DO INÍCIO DO EVENTO
+        $verificarEvento = "SELECT permitiInscricaoAtividade FROM eventos WHERE id_evento = $cod_evento";
+        $resultado = mysqli_query($conexao, $verificarEvento); 
+        while ($rows = mysqli_fetch_array($resultado)) { 
+          $permitir = $rows['permitiInscricaoAtividade'];
+          if ($permitir != 0) {
+            echo "
+              <legend style='text-align: center;'>
+                PERÍODO DE INSCRIÇÃO
+              </legend>
+              <div class='row'>
+                <div class='col-lg-5'>
+                  <div class='form-group'>
+                    <span>Data de início:</span>
+                    <input type='date' name='data_inicioInscricao' id='data_inicioInscricao' class='form-control'required>
+                  </div>
+                </div>
+              <div class='col-lg-5'>
+                <div class='form-group'>
+                  <span>Data final:</span>
+                  <input type='date' name='data_fimInscricao' id='data_fimIncricao' class='form-control' required>
+                </div>
+              </div>
+            </div>
+            ";
+          }
+        }
+        ?>
         <br>
         <div class="row">
           <div class="col-lg-10">

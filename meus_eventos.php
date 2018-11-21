@@ -30,35 +30,37 @@
     ?>
     <?php
     //buscar eventos em que o usuário logado esta inscrito
-      $buscar_eventos = "SELECT DISTINCT * FROM evento, inscricao_evento WHERE cod_evento = id_evento AND cod_usuario = $id_usuario";
+      $buscar_eventos = "SELECT DISTINCT * FROM eventos, inscricaoevento WHERE cod_evento = id_evento AND cod_usuario = $id_usuario";
       $resultado = mysqli_query($conexao, $buscar_eventos);
 
     ?>
     <h1 style="text-align: center;">Meus Eventos</h1>
     <br>
-    <table class="table table-bordered">
+    <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th scope="col">Nome</th>
-        <th scope="col">Data de inicio</th>
-        <th scope="col">Data de termino</th>
+        <th scope="col">Data de início</th>
+        <th scope="col">Data de término</th>
         <th scope="col">Local</th>
+        <th scope="col">Situação</th>
         <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
           while($rows_evento = mysqli_fetch_array($resultado)){
-            $id_e = $rows_evento['id_evento'];
-            $_SESSION['id_ev'] = $id_e;
-            $nome_e = $rows_evento['nome_evento'];
-            $data_1e = $rows_evento['data_inicio'];
-            $data_2e= $rows_evento['data_fim'];
-            $local_e = $rows_evento['local'];
+            $idEvento = $rows_evento['id_evento'];
+            $nomeEvento = $rows_evento['nome_evento'];
+            $dataInicio = $rows_evento['dataInicio_evento'];
+            $dataFim= $rows_evento['dataFinal_evento'];
+            $local = $rows_evento['local_evento'];
+            $situacao = $rows_evento['situacao'];
             echo "<tr>";
-            echo "<td>".$nome_e."</td>";
-            echo "<td>".$data_1e."</td>";
-            echo "<td>".$data_2e."</td>";
-            echo "<td>".$local_e."</td>";
-            echo "<td><a class ='btn' href ='inscricao_atividade.php?id=$id_e'>ATIVIDADES</a></td>";
+            echo "<td>".$nomeEvento."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicio))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataFim))."</td>";
+            echo "<td>".$local."</td>";
+            echo "<td>".$situacao."</td>";
+            echo "<td><a class ='btn' href ='inscricao_atividade.php?id=$idEvento&nome=$nomeEvento'>ATIVIDADES</a></td>";
             echo "</tr>";
           }
         ?>

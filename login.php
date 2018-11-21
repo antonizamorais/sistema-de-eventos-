@@ -60,11 +60,11 @@
         </p>
         <br>
         <div class="row">
-            <div class="col-lg-5">
-                <a href=""> esqueceu sua senha ?</a>
+            <div class="col-lg-5" style="text-align: center;">
+                Esqueceu sua senha? <a href="recuperar_senha.php">Clique aqui</a>
             </div>
-            <div class="col-lg-5">
-                <a href="cadastro_de_usuarios.php"> não tenho cadastro</a>
+            <div class="col-lg-5"style="text-align: center;">
+                Não tenho cadastro? <a href="cadastro_de_usuarios.php">Clique aqui</a>
             </div>
         </div>
         </form>

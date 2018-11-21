@@ -2,8 +2,8 @@
   session_start();
   include_once("conexao.php");
   include_once("seguranca.php");
-  $cod_e = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-
+  $codEvento = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+  $nomeEvento = filter_input(INPUT_GET, 'nome', FILTER_SANITIZE_STRING);
   $usuario = $_SESSION['id_user'];
 ?>
 <!DOCTYPE html>
@@ -31,15 +31,15 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-      $buscar_atividades = "SELECT * FROM inscricao_evento, atividade, usuarios_cadastrados WHERE cod3_evento = $cod_e AND cod_usuario = $usuario AND cod_evento = $cod_e AND id = cod_facilitador";
+    // SELECIONAR AS ATIVIDADES DO EVENTO ESCOLHIDO
+      $buscar_atividades = "SELECT * FROM atividades WHERE codEvento = '$codEvento'";
       $resultado = mysqli_query($conexao, $buscar_atividades);
     ?>
-    <h1 style="text-align: center;">Atividades do Evento</h1>
+    <h1 style="text-align: center;">Atividades do Evento <?php echo $nomeEvento; ?></h1>
     <br>
-    <table class="table table-bordered">
+    <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th scope="col">Nome da atividade</th>
-        <th scope="col">Facilitador</th>
         <th scope="col">Data de início</th>
         <th scope="col">Data de término</th>
         <th><em class="fa fa-cog"></em></th>
@@ -47,18 +47,25 @@
       <tbody>
         <?php 
           while($rows_atividades = mysqli_fetch_array($resultado)){
-            $id_ativ = $rows_atividades['id_atividade'];
-            $_SESSION['id_ativi'] = $id_ativ;
-            $nome_a = $rows_atividades['nome_atividade'];
-            $facilitador_a = $rows_atividades['nome'];
-            $data_1a = $rows_atividades['data_inicio'];
-            $data_2a= $rows_atividades['data_final'];
+            $idAtividade = $rows_atividades['id_atividade'];
+            $nomeAtividade = $rows_atividades['nome_atividade'];
+            $dataInicio = $rows_atividades['dataInicio_atividade'];
+            $dataFinal= $rows_atividades['dataFinal_atividade'];
+            $numInscritos = $rows_atividades['numMax_participantes'];
             echo "<tr>";
-            echo "<td>".$nome_a."</td>";
-            echo "<td>".$facilitador_a."</td>";
-            echo "<td>".$data_1a."</td>";
-            echo "<td>".$data_2a."</td>";
-            echo "<td><a class ='btn' href ='cadastrar_inscricao_atividade.php?id=$id_ativ'>INSCREVE-SE</a></td>";
+            echo "<td>".$nomeAtividade."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicio))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataFinal))."</td>";
+            // VERIFICAR SE O USUÁRIO LOGADO JÁ ESTÁ INSCRITOS NA ATIVIDADE ESCOLHIDA
+            $buscar_inscricao = "SELECT id_inscricao FROM inscricaoatividade WHERE codAtividade = $idAtividade AND codUsuario = $usuario";
+            $resultado_inscricao = mysqli_query($conexao, $buscar_inscricao);
+            $linha = mysqli_fetch_array($resultado_inscricao);
+            // SE LINHAS FOR MENOR OU IGUAL A ZERO SIGINIFICA QUE ELE NÃO ESTÁ INSCRITO, PODENDO FAZER UMA INSCRIÇÃO
+            if ($linha <= 0) {
+              echo "<td><a class ='btn' href ='cadastrar_inscricao_atividade.php?id=$idAtividade&limiteInscritos=$numInscritos'>INSCREVE-SE</a></td>";
+            }else{
+              echo "<td><p class = 'text-danger'>Você já está inscrito</p></td>";
+            }          
             echo "</tr>";
           }
         ?>

@@ -1,9 +1,7 @@
 <?php
   session_start();
   include_once("conexao.php");
-  include_once("seguranca.php");
-
-  $usuario = $_SESSION['id_user'];
+  include_once 'seguranca.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,42 +27,48 @@
     <?php
       include_once("includes/navbar.php");
     ?>
-    <?php
-    // BUSCAR ATIVIDADES EM QUE O USUÁRIO LOGADO ESTA INSCRITO
-      $buscar_atividades = "SELECT DISTINCT * FROM atividades, inscricaoatividade WHERE id_atividade = codAtividade AND codUsuario = $usuario";
-      $resultado = mysqli_query($conexao, $buscar_atividades);
-
+    <?php    
+    $dataAtual = date('Y-m-d');
+    //buscar todos os eventos criados que ainda não foram encerrados e seus respectivos coordenadores
+      $buscar_eventos = "SELECT DISTINCT * FROM eventos, usuarios WHERE cod_coordenador = id_usuario AND  (dataFinal_evento > '$dataAtual' OR `fimInscricao_evento` > '$dataAtual')";
+      $resultado = mysqli_query($conexao, $buscar_eventos);
     ?>
-    <h1 style="text-align: center;">Minhas Atividades</h1>
+    <h1 style="text-align: center;">Adicionar Atividades</h1>
+    <p>Passo 1: Selecionar Evento</p>
     <br>
     <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
+        <th scope="col">ID</th>
         <th scope="col">Nome</th>
+        <th scope="col">Coordenador</th>
         <th scope="col">Data de início</th>
         <th scope="col">Data de término</th>
-        <th scope="col">Tipo de Atividade</th>
-        <th scope="col">Situação</th>
+        <th scope="col">Local</th>
+        <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
-          while($rows_atividade= mysqli_fetch_array($resultado)){
-            $idAtividade = $rows_atividade['id_atividade'];
-            $nomeAtividade = $rows_atividade['nome_atividade'];
-            $dataInicioAtividade = $rows_atividade['dataInicio_atividade'];
-            $dataFinalAtividade = $rows_atividade['dataFinal_atividade'];
-            $tipoAtividade = $rows_atividade['tipo_atividade'];
-            $situacao = $rows_atividade['situacao'];
+          while($rows_evento = mysqli_fetch_array($resultado)){
+            $idEvento = $rows_evento['id_evento'];
+            $nomeEvento = $rows_evento['nome_evento'];
+            $coordenador = $rows_evento['nome_usuario'];
+            $dataInicio_evento = $rows_evento['dataInicio_evento'];
+            $dataFinal_evento= $rows_evento['dataFinal_evento'];
+            $localEvento = $rows_evento['local_evento'];
             echo "<tr>";
-            echo "<td>".$nomeAtividade."</td>";
-            echo "<td>".date('d/m/Y', strtotime($dataInicioAtividade))."</td>";
-            echo "<td>".date('d/m/Y', strtotime($dataFinalAtividade))."</td>";
-            echo "<td>".$tipoAtividade."</td>";
-            echo "<td>".$situacao."</td>";
+            echo "<td>".$idEvento."</td>";
+            echo "<td>".$nomeEvento."</td>";
+            echo "<td>".$coordenador."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicio_evento))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataFinal_evento))."</td>";
+            echo "<td>".$localEvento."</td>";
+            echo"<td><a class='btn' href ='adicionar_atividades.php?id=$idEvento'>SELECIONAR</a></td>";
             echo "</tr>";
           }
         ?>
       </tbody>
-    </table>
+    </table> 
+    <a href="lista_de_coordenadores.php">Deseja cadastrar um novo evento?</a>
     <?php 
       include_once 'includes/footer.php';
     ?> 
