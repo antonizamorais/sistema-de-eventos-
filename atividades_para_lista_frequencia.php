@@ -31,35 +31,35 @@
     ?>
     <?php
     // BUSCAR ATIVIDADES EM QUE O USUÁRIO LOGADO DO TIPO FACILITADOR ESTA RESPONSÁVEL
-      $buscar_atividades = "SELECT DISTINCT * FROM atividade WHERE cod_facilitador = $usuario";
+      $buscar_atividades = "SELECT DISTINCT * FROM atividades WHERE codFacilitador_atividade = $usuario";
       $resultado = mysqli_query($conexao, $buscar_atividades);
 
     ?>
     <h1 style="text-align: center;">Atividades</h1>
     <br>
-    <table class="table table-bordered">
+    <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th scope="col">Nome</th>
-        <th scope="col">Data de inicio</th>
-        <th scope="col">Data de termino</th>
+        <th scope="col">Data de início</th>
+        <th scope="col">Data de término</th>
         <th scope="col">Tipo de Atividade</th>
         <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
           while($rows_atividade= mysqli_fetch_array($resultado)){
-            $id_a = $rows_atividade['id_atividade'];
-            $_SESSION['id_ativi'] = $id_a;
-            $nome_a = $rows_atividade['nome_atividade'];
-            $data_1a = $rows_atividade['data_inicio'];
-            $data_2a= $rows_atividade['data_final'];
-            $tipo_a = $rows_atividade['tipo'];
+            $idAtividade = $rows_atividade['id_atividade'];
+            $nomeAtividade = $rows_atividade['nome_atividade'];
+            $dataInicio = $rows_atividade['dataInicio_atividade'];
+            $dataFinal= $rows_atividade['dataFinal_atividade'];
+            $tipoAtividade = $rows_atividade['tipo_atividade'];
+            $cod_evento = $rows_atividade['codEvento'];
             echo "<tr>";
-            echo "<td>".$nome_a."</td>";
-            echo "<td>".$data_1a."</td>";
-            echo "<td>".$data_2a."</td>";
-            echo "<td>".$tipo_a."</td>";
-            echo "<td><a class ='btn' href ='lista_alunos_atividade.php?id=$id_a'>FREQUÊNCIA</a></td>";
+            echo "<td>".$nomeAtividade."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicio))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataFinal))."</td>";
+            echo "<td>".$tipoAtividade."</td>";
+            echo "<td><a class ='btn' href ='lista_alunos_atividade.php?id=$idAtividade&cod=$cod_evento'>FREQUÊNCIA</a></td>";
             echo "</tr>";
           }
         ?>

@@ -17,7 +17,7 @@
 	$num_evento = $_SESSION['id_do_evento'];
 	$num_usuario = $_SESSION['id_user'];
 
-	$enviar_trabalho = "INSERT INTO trabalho(titulo, resumo, num_usuario, num_evento, local, data) VALUES ('$titulo', '$resumo', '$num_usuario', '$num_evento', '$novo_nome', NOW())"; 
+	$enviar_trabalho = "INSERT INTO trabalhos (titulo, resumo, cod_evento, local, data, cod_usuario, situacao) VALUES ('$titulo', '$resumo', '$num_evento', '$novo_nome', NOW(), '$num_usuario', 'Aguardanto resposta')"; 
 
 	$resultado_envio= mysqli_query($conexao, $enviar_trabalho);
 

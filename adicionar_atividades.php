@@ -31,6 +31,7 @@
       ?>
       <h1 style="text-align: center;">Adicionar Atividades</h1>
       <p>Passo 2: Adicionar Atividades do Evento</p>
+      <p>Compos com * são obrigatórios</p>
       <br>
       <form class="form" action="cadastrar_atividade.php" method="POST">
         <legend style="text-align: center;">
@@ -38,7 +39,7 @@
         </legend>
         <div class="row">
           <div class="col-lg-10">
-            <label>Nome da atividade:</label>
+            <label>* Nome da atividade:</label>
             <div class="form-group">
               <input type="text" name="nome_atividade" id="nome_atividade" class="form-control"required="">
             </div>
@@ -47,7 +48,7 @@
         <div class="row">
           <div class="col-lg-10">
             <div class="form-group">
-              <label>Facilitador:</label>
+              <label>* Facilitador:</label>
               <select class="form-control" name="facilitador">
                 <option>selecione</option>
                 <?php 
@@ -62,34 +63,33 @@
                 ?>
               </select>
             </div>
-            <a href="#">Cadastrar novo facilitador</a>
+            <a href="cadastraUsuario.php">Deseja cadastrar um novo facilitador?</a>
           </div>    
         </div>
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data de início:</span>
+              <span>* Data de início:</span>
               <input type="date" name="dataInicio" id="dataInicio" class="form-control"required="">
             </div>
           </div>
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Data de término:</span>
+              <span>* Data de término:</span>
               <input type="date" name="dataFinal" id="dataFinal" class="form-control">
             </div>
-            <p>Data 2: somente se a avidade for desenvolvida em mais de um dia</p>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Horário de início:</span>
+              <span>* Horário de início:</span>
               <input type="time" name="hora_inicio_atividade" id="hora_inicio_atividade" class="form-control"required="">
             </div>
           </div>
           <div class="col-lg-5">
             <div class="form-group">
-              <span>Horário final:</span>
+              <span>* Horário final:</span>
               <input type="time" name="hora_fim_atividade" id="hora_fim_atividade" class="form-control"required="">
             </div>
           </div>
@@ -97,7 +97,7 @@
         <div class="row">
           <div class="col-lg-5">
             <div class="form-group">
-              <label>Tipo de atividade</label>
+              <label>* Tipo de atividade</label>
               <select class="form-control" name="tipo_atividade">
                 <option>Oficina</option>
                 <option>Minicurso</option>
@@ -111,7 +111,7 @@
           </div> 
           <div class="col-lg-5">
             <div class="form-group">
-              <label>Local da atividade:</label>
+              <label>* Local da atividade:</label>
               <select class="form-control" name="local">
                 <option>selecione</option>
                 <?php 
@@ -139,7 +139,7 @@
           </div> 
           <div class="col-lg-5">
             <div class="form-group">
-              <label>Certificado</label>
+              <label>* Certificado</label>
               <select class="form-control" name="certificado_atividade">
                 <option>Com Certificado</option>
                 <option>Sem Certificado</option>
@@ -162,13 +162,13 @@
               <div class='row'>
                 <div class='col-lg-5'>
                   <div class='form-group'>
-                    <span>Data de início:</span>
+                    <span>* Data de início:</span>
                     <input type='date' name='data_inicioInscricao' id='data_inicioInscricao' class='form-control'required>
                   </div>
                 </div>
               <div class='col-lg-5'>
                 <div class='form-group'>
-                  <span>Data final:</span>
+                  <span>* Data final:</span>
                   <input type='date' name='data_fimInscricao' id='data_fimIncricao' class='form-control' required>
                 </div>
               </div>

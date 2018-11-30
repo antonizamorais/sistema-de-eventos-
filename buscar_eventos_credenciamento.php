@@ -30,7 +30,7 @@
     ?>
     <?php
     //buscar eventos em que o usuário logado seja o coordenador do evento
-      $buscar_eventos = "SELECT DISTINCT * FROM evento WHERE cod_coordenador = $id_usuario";
+      $buscar_eventos = "SELECT DISTINCT * FROM eventos WHERE cod_coordenador = $id_usuario";
       $resultado = mysqli_query($conexao, $buscar_eventos);
 
     ?>

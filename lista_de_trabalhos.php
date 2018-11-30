@@ -30,8 +30,8 @@
     ?>
     <?php
     //buscar trabalhos enviados pelo usuario logado - participante.
-      $buscar_trabalhos = "SELECT * FROM trabalho WHERE 
-      num_usuario = $id_participante";
+      $buscar_trabalhos = "SELECT * FROM trabalhos WHERE 
+      cod_usuario = $id_participante";
       $resultado = mysqli_query($conexao, $buscar_trabalhos);
     ?>
     <h1 style="text-align: center;">Meus Trabalhos</h1>
@@ -49,7 +49,7 @@
             $num_trabalho = $rows_trabalho['numero'];
             $resumo = $rows_trabalho['resumo'];
             $titulo = $rows_trabalho['titulo'];
-            $avaliacao= $rows_trabalho['avaliacao'];
+            $avaliacao= $rows_trabalho['situacao'];
             $local = $rows_trabalho['local'];
             echo "<tr>";
             echo "<td>".$titulo."</td>";

@@ -65,7 +65,7 @@
               <select class="form-control" name="evento">
                 <option>selecione</option>
                 <?php 
-                  $result_eventos= "SELECT * FROM evento, inscricao_evento WHERE cod_usuario = $id_participante AND cod_evento = id_evento";
+                  $result_eventos= "SELECT * FROM eventos, inscricaoevento WHERE cod_usuario = $id_participante AND cod_evento = id_evento";
                   $resultado = mysqli_query($conexao, $result_eventos);
                   if (empty($resultado)) {
                     echo "Você não está inscrito em nenhum evento";

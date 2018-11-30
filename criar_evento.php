@@ -122,7 +122,7 @@
           <div class="col-lg-3">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="defaultUnchecked2" name="insc_ativ" value="true">
-              <label class="custom-control-label" for="defaultUnchecked2">Inscrição de atividade</label>
+              <label class="custom-control-label" for="defaultUnchecked2">Permitir inscrições de atividade fora do período de duração deste evento</label>
             </div>
           </div>
         </div>

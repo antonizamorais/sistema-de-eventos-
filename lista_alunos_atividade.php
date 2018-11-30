@@ -3,9 +3,8 @@
   include_once("conexao.php");
   include_once("seguranca.php");
 
-  $cod_a = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-  $_SESSION['idAtividade'] = $cod_a;
-  $usuario = $_SESSION['id_user'];
+  $cod_atividade = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+  $cod_evento = filter_input(INPUT_GET, 'cod', FILTER_SANITIZE_NUMBER_INT);
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,7 +31,7 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-      $buscar_alunos= "SELECT * FROM usuarios_cadastrados, inscricao_atividade WHERE cod_atividade = $cod_a AND cod2_usuario = id";
+      $buscar_alunos= "SELECT ia.id_inscricao, u.id_usuario, u.nome_usuario, u.data_nascimento_usuario, e.nome_evento, a.nome_atividade FROM usuarios as u, inscricaoatividade as ia, atividades as a, eventos as e WHERE ia.codUsuario = u.id_usuario and ia.codAtividade = a.id_atividade and a.codEvento = e.id_evento and ia.codAtividade =  $cod_atividade and e.id_evento =  $cod_evento order by u.nome_usuario;";
       $resultado = mysqli_query($conexao, $buscar_alunos);
 
     ?>
@@ -40,23 +39,29 @@
     <br>
     <form class="form" action="salvar_frequencia.php" 
     method="POST">
-      <table class="table table-bordered">
+      <table class="tabletable-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th>Nome</th>
+        <th>Data de Nascimento</th>
+        <th>Evento</th>
+        <th>Atividade</th>
         <th>Presente</th>
       </thead>
       <tbody>
         <?php 
           while($rows_atividade= mysqli_fetch_array($resultado)){
-            $num_inscricao = $rows_atividade['n_ins_a'];
-            $_SESSION['numIncricao'] = $num_inscricao;
-            $idAluno = $rows_atividade['id'];
-            $_SESSION['id_aluno'] = $idAluno;
-            $nome_aluno = $rows_atividade['nome'];
+            $num_inscricao = $rows_atividade['id_inscricao'];
+            $idAluno = $rows_atividade['id_usuario'];
+            $nome_aluno = $rows_atividade['nome_usuario'];
+            $dataNasc = $rows_atividade['data_nascimento_usuario'];
+            $nome_atividade = $rows_atividade['nome_atividade'];
+            $nome_evento = $rows_atividade['nome_evento'];
             echo "<tr>";
             echo "<td>".$nome_aluno."</td>";
-            echo "<td><label class='checkbox-inline'><input type='checkbox' value='true' name='presente'>SIM</label>
-            &nbsp<label class='checkbox-inline'><input type='checkbox' value='true' name='nao_presente'>NÃO</label></td>";
+            echo "<td>".date('d/m/Y', strtotime($dataNasc))."</td>";
+            echo "<td>".$nome_atividade."</td>";
+            echo "<td>".$nome_evento."</td>";
+            echo "<td><label class='checkbox-inline'><input type='checkbox' value='true' name='presente'>SIM</label>";
             echo "</tr>";
           }
         ?>
