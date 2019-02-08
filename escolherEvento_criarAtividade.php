@@ -2,6 +2,7 @@
   session_start();
   include_once("conexao.php");
   include_once 'seguranca.php';
+  $usuario = $_SESSION['id_user'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,8 +30,8 @@
     ?>
     <?php    
     $dataAtual = date('Y-m-d');
-    //buscar todos os eventos criados que ainda não foram encerrados e seus respectivos coordenadores
-      $buscar_eventos = "SELECT DISTINCT * FROM eventos, usuarios WHERE cod_coordenador = id_usuario AND  (dataFinal_evento > '$dataAtual' OR `fimInscricao_evento` > '$dataAtual')";
+    //buscar todos os eventos criados que ainda não foram encerrados e o coordenador seja o usuario logado
+      $buscar_eventos = "SELECT DISTINCT * FROM eventos, usuarios WHERE cod_coordenador = id_usuario AND cod_coordenador = $usuario AND (dataFinal_evento > '$dataAtual' OR `fimInscricao_evento` > '$dataAtual')";
       $resultado = mysqli_query($conexao, $buscar_eventos);
     ?>
     <h1 style="text-align: center;">Adicionar Atividades</h1>
@@ -68,7 +69,7 @@
         ?>
       </tbody>
     </table> 
-    <a href="lista_de_coordenadores.php">Deseja cadastrar um novo evento?</a>
+    <a href="criar_evento.php">Deseja cadastrar um novo evento?</a>
     <?php 
       include_once 'includes/footer.php';
     ?> 

@@ -1,32 +1,20 @@
 <?php 
 	session_start();
-	$presente = true;
-	$nao_presente = true;
-	$num_atividade =  $_SESSION['idAtividade']; 
-	$num_participante = $_SESSION['numIncricao'];
 
-	if ( !isset( $_POST ) || empty( $_POST ) ) {
-		$erro = 'Nada foi postado.';
-	}
+	$num_participante = filter_input(INPUT_GET, 'num', FILTER_SANITIZE_NUMBER_INT);
+	$id_participante = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
 	include_once('conexao.php');
-
-	if (empty($_POST['presente']) ) {
-		$presente = 0;
-	}
-	if (empty($_POST['nao_presente']) ) {
-		$nao_presente = 0;
-	}
 	
-	$cadastrar_presenca = "UPDATE inscricao_atividade SET 
-	lista_presenca = '$presente' WHERE n_ins_a = '$num_participante' AND cod_atividade = '$num_atividade'";
+	$cadastrar_presenca = "UPDATE inscricaoatividade SET presenca = 'Presente' WHERE id_inscricao = '$num_participante' AND codUsuario = '$id_participante'";
 
 	$resultado_presenca= mysqli_query($conexao, $cadastrar_presenca);
 	
 	$receber = mysqli_commit($conexao);
 
 	if ($resultado_presenca) {
-		echo "lista de presenca salva";
-		echo $cadastrar_presenca;
+		$volta = $_SERVER['HTTP_REFERER'];
+		header('Location: ' . $volta); 
 	}else{
 		echo "erro";
 		echo $cadastrar_presenca;

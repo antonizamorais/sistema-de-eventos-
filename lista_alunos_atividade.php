@@ -31,21 +31,21 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-      $buscar_alunos= "SELECT ia.id_inscricao, u.id_usuario, u.nome_usuario, u.data_nascimento_usuario, e.nome_evento, a.nome_atividade FROM usuarios as u, inscricaoatividade as ia, atividades as a, eventos as e WHERE ia.codUsuario = u.id_usuario and ia.codAtividade = a.id_atividade and a.codEvento = e.id_evento and ia.codAtividade =  $cod_atividade and e.id_evento =  $cod_evento order by u.nome_usuario;";
+      $buscar_alunos= "SELECT ia.id_inscricao, ia.presenca, u.id_usuario, u.nome_usuario, u.data_nascimento_usuario, e.nome_evento, a.nome_atividade FROM usuarios as u, inscricaoatividade as ia, atividades as a, eventos as e WHERE ia.codUsuario = u.id_usuario and ia.codAtividade = a.id_atividade and a.codEvento = e.id_evento and ia.codAtividade =  $cod_atividade and e.id_evento =  $cod_evento order by u.nome_usuario;";
       $resultado = mysqli_query($conexao, $buscar_alunos);
 
     ?>
     <h1 style="text-align: center;">Lista de Alunos</h1>
     <br>
-    <form class="form" action="salvar_frequencia.php" 
+    <form class="form" action="" 
     method="POST">
-      <table class="tabletable-hover" style="text-align: center;">
+      <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th>Nome</th>
         <th>Data de Nascimento</th>
         <th>Evento</th>
         <th>Atividade</th>
-        <th>Presente</th>
+        <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
@@ -56,20 +56,22 @@
             $dataNasc = $rows_atividade['data_nascimento_usuario'];
             $nome_atividade = $rows_atividade['nome_atividade'];
             $nome_evento = $rows_atividade['nome_evento'];
+            $presenca = $rows_atividade['presenca'];
             echo "<tr>";
             echo "<td>".$nome_aluno."</td>";
             echo "<td>".date('d/m/Y', strtotime($dataNasc))."</td>";
             echo "<td>".$nome_atividade."</td>";
             echo "<td>".$nome_evento."</td>";
-            echo "<td><label class='checkbox-inline'><input type='checkbox' value='true' name='presente'>SIM</label>";
+            if (is_null($presenca)) {
+              echo "<td><a href='salvar_frequencia.php?id=$idAluno&num=$num_inscricao'><i class='fa fa-save'></i></a> <a href='detalhesUsuarios.php?id=$idAluno'><i class='fas fa-eye'></i></a></td>";
+            }else{
+              echo "<td style='color: green;'>Presente</td>";
+            }   
             echo "</tr>";
           }
         ?>
       </tbody>
     </table>
-    <div class="col-lg-5">
-        <button class="btn btn-lg btn-block" type="submit">SALVAR</button>
-    </div>
     </form>
     <?php 
       include_once 'includes/footer.php';

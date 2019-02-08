@@ -8,5 +8,5 @@ unset($_SESSION['nome_user'],
       $_SESSION['senha_user'], 
       $_SESSION['tipo_user']);
 
-header("Location: login.php");
+header("Location: index.php");
 ?>

@@ -91,8 +91,6 @@ if($btnCadUsuario){
         // Variável com a senha guardada
         $senha = $dados['senha'];
         $confirmar = $dados['conf_senha'];
-        //$criptografada = crypt($senha);
-        //$confirma_criptografada = crypt($confirmar);
 
         $resto = password_hash($senha, PASSWORD_DEFAULT);
         $restoConfirmar = password_hash($confirmar, PASSWORD_DEFAULT);
@@ -100,7 +98,7 @@ if($btnCadUsuario){
         $result_usuario = "INSERT INTO usuarios (nome_usuario, sexo_usuario, data_nascimento_usuario, cpf_usuario, endereco_usuario, cidade_usuario, cep_usuario, estado_usuario, email_usuario, senha_usuario, confirmar_senha_usuario, tipo_usuario) VALUES ('" .$dados['nome']. "','" .$dados['sexo']. "','" .$dados['datanasc']. "','" .$dados['cpf']. "','" .$dados['endereco']. "','" .$dados['cidade']. "', '" .$dados['cep']. "', '" .$dados['estado']. "', '" .$dados['email']. "', '$resto' , '$restoConfirmar', 'Participante')";
         $resultado_usario = mysqli_query($conexao, $result_usuario);
         if($resultado_usario){
-            echo "<script>alert('Usuário Cadastrado com Sucesso !');window.location.href='login.php'</script>";
+            echo "<script>alert('Usuário Cadastrado com Sucesso !');window.location.href='index.php'</script>";
         }else{
             $_SESSION['msg'] = "Erro ao cadastrar o usuário";
             echo $result_usuario;

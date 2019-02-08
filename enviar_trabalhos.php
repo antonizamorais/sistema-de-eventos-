@@ -30,12 +30,20 @@
     ?>
     <h1 style="text-align: center;">Enviar Novo Trabalho</h1>
     <br>
+    <p>
+      <?php
+        if(isset($_SESSION['msg'])){
+            echo $_SESSION['msg'];
+            unset($_SESSION['msg']);
+        }
+      ?>
+    </p> 
       <form class="form" action="enviar_trabalho_banco.php" method="POST" enctype="multipart/form-data">
         <div class="row">
           <div class="col-lg-10">
             <label>Titulo:</label>
             <div class="form-group">
-              <input type="text" name="titulo_trabalho" id="titulo_trabalho" class="form-control"required="">
+              <input type="text" name="titulo_trabalho" id="titulo_trabalho" class="form-control" required>
             </div>
           </div> 
         </div>
@@ -43,7 +51,7 @@
           <div class="col-lg-10">
             <label>Resumo:</label>
             <div class="form-group">
-              <textarea name="resumo_trabalho" rows="8" cols="85" required="">
+              <textarea name="resumo_trabalho" rows="8" cols="85" required >
               </textarea>
             </div>
           </div> 
@@ -62,8 +70,7 @@
           <div class="col-lg-5">
             <div class="form-group">
               <label>Evento:</label>
-              <select class="form-control" name="evento">
-                <option>selecione</option>
+              <select class="form-control" name="evento" required>
                 <?php 
                   $result_eventos= "SELECT * FROM eventos, inscricaoevento WHERE cod_usuario = $id_participante AND cod_evento = id_evento";
                   $resultado = mysqli_query($conexao, $result_eventos);

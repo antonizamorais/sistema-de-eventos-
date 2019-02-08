@@ -31,6 +31,7 @@
       include_once("includes/navbar.php");
     ?>
     <?php
+    $dataAtual = date('Y-m-d'); 
     // SELECIONAR AS ATIVIDADES DO EVENTO ESCOLHIDO
       $buscar_atividades = "SELECT * FROM atividades WHERE codEvento = '$codEvento'";
       $resultado = mysqli_query($conexao, $buscar_atividades);
@@ -40,8 +41,8 @@
     <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th scope="col">Nome da atividade</th>
-        <th scope="col">Data de início</th>
-        <th scope="col">Data de término</th>
+        <th scope="col">Datas de duração</th>
+        <th scope="col">Datas de inscricões</th>
         <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
@@ -51,21 +52,27 @@
             $nomeAtividade = $rows_atividades['nome_atividade'];
             $dataInicio = $rows_atividades['dataInicio_atividade'];
             $dataFinal= $rows_atividades['dataFinal_atividade'];
+            $dataInicalInscricao = $rows_atividades['dataInicio_inscricao'];
+            $dataFinalInscricao = $rows_atividades['dataFinal_inscricao'];
             $numInscritos = $rows_atividades['numMax_participantes'];
             echo "<tr>";
             echo "<td>".$nomeAtividade."</td>";
-            echo "<td>".date('d/m/Y', strtotime($dataInicio))."</td>";
-            echo "<td>".date('d/m/Y', strtotime($dataFinal))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicio))." á ".date('d/m/Y', strtotime($dataFinal))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicalInscricao))." á ".date('d/m/Y', strtotime($dataFinalInscricao))."</td>";
             // VERIFICAR SE O USUÁRIO LOGADO JÁ ESTÁ INSCRITOS NA ATIVIDADE ESCOLHIDA
             $buscar_inscricao = "SELECT id_inscricao FROM inscricaoatividade WHERE codAtividade = $idAtividade AND codUsuario = $usuario";
             $resultado_inscricao = mysqli_query($conexao, $buscar_inscricao);
             $linha = mysqli_fetch_array($resultado_inscricao);
             // SE LINHAS FOR MENOR OU IGUAL A ZERO SIGINIFICA QUE ELE NÃO ESTÁ INSCRITO, PODENDO FAZER UMA INSCRIÇÃO
-            if ($linha <= 0) {
+            if($dataFinalInscricao <= $dataAtual){
+              echo "<td><p class = 'text-danger'>Inscrições Encerradas</p></td>";
+            }elseif ($linha <= 0) {
               echo "<td><a class ='btn' href ='cadastrar_inscricao_atividade.php?id=$idAtividade&limiteInscritos=$numInscritos'>INSCREVE-SE</a></td>";
+            }elseif ($linha > 0) {
+              echo "<td><p class = 'text-success'>Você já está inscrito</p></td>";
             }else{
-              echo "<td><p class = 'text-danger'>Você já está inscrito</p></td>";
-            }          
+              echo "<td><p class = 'text-warning'>Incrições não iniciada</p></td>";
+            }         
             echo "</tr>";
           }
         ?>

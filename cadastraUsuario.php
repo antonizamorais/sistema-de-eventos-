@@ -77,7 +77,13 @@ if($btnCadUsuario){
   }
     
   if(!$erro){
-    $result_usuario = "INSERT INTO usuarios (nome_usuario, sexo_usuario, data_nascimento_usuario, cpf_usuario, endereco_usuario, cidade_usuario, cep_usuario, estado_usuario, email_usuario, senha_usuario, confirmar_senha_usuario, tipo_usuario) VALUES ('" .$dados['nome']. "','" .$dados['sexo']. "','" .$dados['datanasc']. "','" .$dados['cpf']. "','" .$dados['endereco']. "','" .$dados['cidade']. "', '" .$dados['cep']. "', '" .$dados['estado']. "', '" .$dados['email']. "', '" .$dados['senha']. "', '" .$dados['conf_senha']. "', '".$dados['tipo']."')";
+    $senha = $dados['senha'];
+    $confirmar = $dados['conf_senha'];
+
+    $senhacriptografada = password_hash($senha, PASSWORD_DEFAULT);
+    $confirmarsenhacriptografada = password_hash($confirmar, PASSWORD_DEFAULT);
+
+    $result_usuario = "INSERT INTO usuarios (nome_usuario, sexo_usuario, data_nascimento_usuario, cpf_usuario, endereco_usuario, cidade_usuario, cep_usuario, estado_usuario, email_usuario, senha_usuario, confirmar_senha_usuario, tipo_usuario) VALUES ('" .$dados['nome']. "','" .$dados['sexo']. "','" .$dados['datanasc']. "','" .$dados['cpf']. "','" .$dados['endereco']. "','" .$dados['cidade']. "', '" .$dados['cep']. "', '" .$dados['estado']. "', '" .$dados['email']. "', '$senhacriptografada', '$confirmarsenhacriptografada', '".$dados['tipo']."')";
       $resultado_usario = mysqli_query($conexao, $result_usuario);
     if($resultado_usario){
       echo "<script>alert('Usuário Cadastrado com Sucesso !');window.location.href='lista_de_coordenadores.php'</script>";

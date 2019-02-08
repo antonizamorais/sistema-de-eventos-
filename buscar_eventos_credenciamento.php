@@ -29,36 +29,38 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-    //buscar eventos em que o usuário logado seja o coordenador do evento
-      $buscar_eventos = "SELECT DISTINCT * FROM eventos WHERE cod_coordenador = $id_usuario";
+    $dataAtual = date('Y-m-d'); 
+    //buscar eventos em que o usuário logado seja o coordenador do evento e que a data acessada esteja no periodo de duração do evento
+      $buscar_eventos = "SELECT DISTINCT * FROM eventos WHERE cod_coordenador = $id_usuario AND '$dataAtual' BETWEEN dataInicio_evento AND dataFinal_evento";
       $resultado = mysqli_query($conexao, $buscar_eventos);
 
     ?>
-    <h1 style="text-align: center;">Eventos</h1>
+    <h1 style="text-align: center;">Credenciamento</h1>
     <br>
-    <table class="table table-bordered">
+    <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th scope="col">Nome</th>
-        <th scope="col">Data de inicio</th>
-        <th scope="col">Data de termino</th>
+        <th scope="col">Duração do evento</th>
+        <th scope="col">Período de inscrição</th>
         <th scope="col">Local</th>
         <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
           while($rows_evento = mysqli_fetch_array($resultado)){
-            $id_e = $rows_evento['id_evento'];
-            $_SESSION['id_ev'] = $id_e;
-            $nome_e = $rows_evento['nome_evento'];
-            $data_1e = $rows_evento['data_inicio'];
-            $data_2e= $rows_evento['data_fim'];
-            $local_e = $rows_evento['local'];
+            $idEvento = $rows_evento['id_evento'];
+            $nome = $rows_evento['nome_evento'];
+            $data_inicio = $rows_evento['dataInicio_evento'];
+            $data_final= $rows_evento['dataFinal_evento'];
+            $data_inicioIncricao = $rows_evento['inicioInscricao_evento'];
+            $data_fimInscricao= $rows_evento['fimInscricao_evento'];
+            $local = $rows_evento['local_evento'];
             echo "<tr>";
-            echo "<td>".$nome_e."</td>";
-            echo "<td>".$data_1e."</td>";
-            echo "<td>".$data_2e."</td>";
-            echo "<td>".$local_e."</td>";
-            echo "<td><a class ='btn' href ='fazer_credenciamento.php?id=$id_e'>FAZER CREDENCIAMENTO</a></td>";
+            echo "<td>".$nome."</td>";
+            echo "<td>".date('d/m/Y', strtotime($data_inicio))." á ".date('d/m/Y', strtotime($data_final))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($data_inicioIncricao))." á ".date('d/m/Y', strtotime($data_fimInscricao))."</td>";
+            echo "<td>".$local."</td>";
+            echo "<td><a class ='btn' href ='fazer_credenciamento.php?id=$idEvento'>CREDENCIAMENTO</a></td>";
             echo "</tr>";
           }
         ?>

@@ -30,6 +30,7 @@
       include_once("includes/navbar.php");
     ?>
     <?php
+    $dataAtual = date('Y-m-d'); 
     // BUSCAR ATIVIDADES EM QUE O USUÁRIO LOGADO DO TIPO FACILITADOR ESTA RESPONSÁVEL
       $buscar_atividades = "SELECT DISTINCT * FROM atividades WHERE codFacilitador_atividade = $usuario";
       $resultado = mysqli_query($conexao, $buscar_atividades);
@@ -40,8 +41,8 @@
     <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
         <th scope="col">Nome</th>
-        <th scope="col">Data de início</th>
-        <th scope="col">Data de término</th>
+        <th scope="col">Datas de duração</th>
+        <th scope="col">Datas de inscrição</th>
         <th scope="col">Tipo de Atividade</th>
         <th><em class="fa fa-cog"></em></th>
       </thead>
@@ -54,12 +55,18 @@
             $dataFinal= $rows_atividade['dataFinal_atividade'];
             $tipoAtividade = $rows_atividade['tipo_atividade'];
             $cod_evento = $rows_atividade['codEvento'];
+            $dataInicalInscricao = $rows_atividade['dataInicio_inscricao'];
+            $dataFinalInscricao = $rows_atividade['dataFinal_inscricao'];
             echo "<tr>";
             echo "<td>".$nomeAtividade."</td>";
-            echo "<td>".date('d/m/Y', strtotime($dataInicio))."</td>";
-            echo "<td>".date('d/m/Y', strtotime($dataFinal))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicio))." á ".date('d/m/Y', strtotime($dataFinal))."</td>";
+            echo "<td>".date('d/m/Y', strtotime($dataInicalInscricao))." á ".date('d/m/Y', strtotime($dataFinalInscricao))."</td>";
             echo "<td>".$tipoAtividade."</td>";
-            echo "<td><a class ='btn' href ='lista_alunos_atividade.php?id=$idAtividade&cod=$cod_evento'>FREQUÊNCIA</a></td>";
+             if($dataFinalInscricao <= $dataAtual){
+              echo "<td><p class = 'text-danger'>Inscrições Encerradas</p></td>";
+            }else{
+              echo "<td><a class ='btn' href ='lista_alunos_atividade.php?id=$idAtividade&cod=$cod_evento'>FREQUÊNCIA</a></td>";
+            }
             echo "</tr>";
           }
         ?>

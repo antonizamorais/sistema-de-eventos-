@@ -3,8 +3,7 @@
   include_once("conexao.php");
   include_once("seguranca.php");
 
-  $cod_e = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-  $_SESSION['idEvento'] = $cod_e;
+  $codEvento = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
   $usuario = $_SESSION['id_user'];
 ?>
 <!DOCTYPE html>
@@ -32,7 +31,7 @@
       include_once("includes/navbar.php");
     ?>
     <?php
-      $buscar_participantes= "SELECT * FROM usuarios_cadastrados, inscricao_evento WHERE cod_evento = $cod_e AND cod_usuario = id";
+      $buscar_participantes= "SELECT * FROM usuarios, inscricaoevento WHERE cod_evento = $codEvento AND cod_usuario = id_usuario";
       $resultado = mysqli_query($conexao, $buscar_participantes);
 
     ?>
@@ -40,30 +39,36 @@
     <br>
     <form class="form" action="salvar_credenciamentos.php" 
     method="POST">
-      <table class="table table-bordered">
+      <table class="table table-hover" style="text-align: center;">
       <thead class="thead-dark">
+        <th>Número de inscrição</th>
         <th>Nome</th>
-        <th></th>
+        <th>Data de Nascimento</th>
+        <th><em class="fa fa-cog"></em></th>
       </thead>
       <tbody>
         <?php 
           while($rows_participantes= mysqli_fetch_array($resultado)){
-            $num_inscricao_evento = $rows_participantes['num_inscricao'];
-            $_SESSION['numIncricaoEvento'] = $num_inscricao_evento;
-            $id_participante = $rows_participantes['id'];
-            $_SESSION['id_participante'] = $id_participante;
-            $nome_participante = $rows_participantes['nome'];
+            $num_inscricaoEvento = $rows_participantes['id_inscricao'];
+            $participante = $rows_participantes['cod_usuario'];
+            $nome_participante = $rows_participantes['nome_usuario'];
+            $dataNascimento = $rows_participantes['data_nascimento_usuario'];
+            $evento = $rows_participantes['cod_evento'];
+            $credenciamento= $rows_participantes['credenciamento'];
             echo "<tr>";
+            echo "<td>".$num_inscricaoEvento."</td>";
             echo "<td>".$nome_participante."</td>";
-            echo "<td><label class='checkbox-inline'><input type='checkbox' value='true' name='presente'> PRESENTE</label>";
+            echo "<td>".date('d/m/Y', strtotime($dataNascimento))."</td>";
+            if (is_null($credenciamento)) {
+              echo "<td><a href='salvar_credenciamentos.php?id=$participante&numIns=$num_inscricaoEvento&codevento=$evento'><i class='fa fa-save'></i></a> <a href='detalhesUsuarios.php?id=$participante'><i class='fas fa-eye'></i></a></td>";
+            }else{
+              echo "<td style='color: red;'>Já Credenciado</td>";
+            }         
             echo "</tr>";
           }
         ?>
       </tbody>
     </table>
-    <div class="col-lg-5">
-        <button class="btn btn-lg btn-block" type="submit">SALVAR</button>
-    </div>
     </form>
     <?php 
       include_once 'includes/footer.php';

@@ -11,7 +11,7 @@
 
 	if (empty($resultado = mysqli_fetch_assoc($result))) {
 		$_SESSION['loginerro'] = '<div class="alert alert-danger text-center" role="alert">Email ou senha inválido!</div>';
-		header("Location:login.php");
+		header("Location:index.php");
 	}else{
 		$_SESSION['nome_user'] = $resultado['nome_usuario'];
 		$_SESSION['id_user'] = $resultado['id_usuario'];
